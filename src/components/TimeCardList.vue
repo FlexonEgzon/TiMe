@@ -8,10 +8,19 @@ const removeCard = (cardId: number) => {
   store.removeCard(cardId);
 }
 
+const startCard = (cardId: number) => {
+  store.startCard(cardId);
+}
+
+const stopCard = (cardId: number) => {
+  store.stopCard(cardId);
+}
+
 </script>
 
 <template>
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-    <TimeCard v-for="card in store.cards" @remove-card="removeCard" :key="card.id" :card="card" />
+    <TimeCard v-for="card in store.cards" @remove-card="removeCard" @start-card="startCard" @stop-card="stopCard"
+      :key="card.id" :card="card" />
   </div>
 </template>
