@@ -18,6 +18,19 @@ export const useCardStore = defineStore('cardStore', {
     },
     //Intern function helpers END
 
+    //Change Title Function
+    renameCard(cardId: number, title: string) {
+      const currCard = this.getCardById(cardId)
+      if (currCard) {
+        title = title.trim() //Trim Spaces around the Title
+        if (!title) {
+          currCard.title = 'Untitled Card'
+          return
+        }
+        if (currCard.title !== title) currCard.title = title //set New Title
+      }
+    },
+
     createCard() {
       //Creates a new Card Instance with default values
       const newCard: TimeCard = {

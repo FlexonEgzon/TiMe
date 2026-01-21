@@ -1,18 +1,24 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, nextTick, computed } from 'vue'
 import type { TimeCard } from '../stores/types/TimeCard'
 import { formatTime } from '../utils/formatTime'
 import { useTickPulse } from '../composables/useTickPulse'
 
 const props = defineProps<{ card: TimeCard }>() //Interface of Timecard that makes possible to use it in the template
-const { tickPulse } = useTickPulse(() => props.card.isRunning, { pulseMs: 90 })
 
+const { tickPulse } = useTickPulse(() => props.card.isRunning, { pulseMs: 90 })
 const formattedTime = computed(() => formatTime(props.card.timeMs))
+
+let draftTitle = ref<string>(props.card.title)
+let isEditingTitle = ref<boolean>(false)
+
+const titleInputEl = ref<HTMLInputElement | null>(null) //Used for autofocusing on Title for direct writing
 
 const emit = defineEmits<{
   (e: 'remove-card', id: number): void // Before: const emit = defineEmits(['remove-card']) Reason: Its a Parameter check for id: number (id is required and needs to be a number)
   (e: 'start-card', id: number): void // Start card by firing event
   (e: 'stop-card', id: number): void //Stop card by firing event
+  (e: 'rename-card', id: number, title: string): void
 }>()
 
 const removeCard = () => {
@@ -23,6 +29,29 @@ const startCard = () => {
 }
 const stopCard = () => {
   emit('stop-card', props.card.id)
+}
+const renameCard = () => {
+  emit('rename-card', props.card.id, draftTitle.value)
+}
+
+async function startEditingTitle() {
+  if (!isEditingTitle.value) {
+    draftTitle.value = props.card.title
+    isEditingTitle.value = true
+
+    await nextTick()
+    titleInputEl.value?.focus()
+    titleInputEl.value?.select()
+  }
+}
+
+function finishEditingTitle(save: boolean) {
+  if (isEditingTitle.value) {
+    isEditingTitle.value = false
+    if (save && draftTitle.value !== props.card.title) renameCard() // Enter was pressed or blur so save the damn tile
+    if (!save) draftTitle.value = props.card.title // Esc was pressed
+    //console.log(props.card.title)
+  }
 }
 </script>
 
@@ -35,18 +64,23 @@ const stopCard = () => {
     tickPulse ? 'ring-green-500/90 shadow-2xl ring-offset-2 ring-offset-white' : '',
   ]">
     <div class="flex flex-row justify-between">
-      <h2 class="text-lg font-semibold mb-2">{{ props.card.title }}</h2>
+      <h2 @click="startEditingTitle" v-if="!isEditingTitle" class="w-full truncate text-lg font-semibold mb-2">
+        {{ props.card.title }}
+      </h2>
+      <input v-else ref="titleInputEl" v-model="draftTitle" @blur="finishEditingTitle(true)"
+        @keydown.enter="finishEditingTitle(true)" @keydown.esc="finishEditingTitle(false)"
+        class="w-full text-lg font-semibold mb-2" />
 
       <!-- its just a button :-( -->
       <div @click="removeCard"
-        class="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer transition-all bg-gray-100 hover:bg-gray-300 hover:scale-110">
+        class="w-8 h-8 ml-2 flex items-center justify-center rounded-full cursor-pointer transition-all bg-gray-100 hover:bg-gray-300 hover:scale-110">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
           class="w-4 h-4">
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
         </svg>
       </div>
     </div>
-    <div class="text-3xl font-bold mb-4">
+    <div class="flex items-center justify-center text-3xl font-bold mb-4">
       {{ formattedTime }}
     </div>
 
