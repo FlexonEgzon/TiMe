@@ -2,20 +2,9 @@
 import { useCardStore } from '../stores/cardStore'
 import TimeCard from './TimeCard.vue'
 
-const store = useCardStore();
+const store = useCardStore()
 
-const removeCard = (cardId: number) => {
-  store.removeCard(cardId);
-}
-
-const startCard = (cardId: number) => {
-  store.startCard(cardId);
-}
-
-const stopCard = (cardId: number) => {
-  store.stopCard(cardId);
-}
-
+const { removeCard, startCard, stopCard } = store
 </script>
 
 <template>
