@@ -31,6 +31,15 @@ export const useCardStore = defineStore('cardStore', {
       }
     },
 
+    updateDescription(cardId: number, descr: string) {
+      descr = descr.trim() //Clear spaces
+      const currCard = this.getCardById(cardId)
+      if (currCard && currCard.description != descr) {
+        if (!descr) currCard.description = ''
+        else currCard.description = descr // Set Description
+      }
+    },
+
     createCard() {
       //Creates a new Card Instance with default values
       const newCard: TimeCard = {
@@ -39,6 +48,7 @@ export const useCardStore = defineStore('cardStore', {
         timeMs: 0,
         isRunning: false,
         lastTickAt: undefined,
+        description: '',
       }
       return newCard
     },
