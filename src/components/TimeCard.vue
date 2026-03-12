@@ -63,6 +63,13 @@ function finishEditingTitle(save: boolean) {
     //console.log(props.card.title)
   }
 }
+
+async function conformationDelete(title: string){
+   
+    
+  
+}
+
 </script>
 
 <template>

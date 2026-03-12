@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { toast } from "vue-toastflow";
 import { useCardStore } from '../stores/cardStore'
 import TimeCard from './TimeCard.vue'
 import { ref, computed } from 'vue'
@@ -24,10 +25,11 @@ function closeDetails() {
   activeCardId.value = null;
 }
 function saveDetails(payload: SaveDetailsPayload) {
-  updateDescription(payload.id, payload.description)
-  renameCard(payload.id, payload.title)
+   updateDescription(payload.id, payload.description)
+   renameCard(payload.id, payload.title)
   closeDetails()
 }
+
 </script>
 
 

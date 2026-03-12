@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import type { TimeCard } from './types/TimeCard'
+import { toast } from 'vue-toastflow'
 
 let tickerId: ReturnType<typeof setInterval> | null = null // Stores the reference of current intervall
 
@@ -20,24 +21,34 @@ export const useCardStore = defineStore('cardStore', {
 
     //Change Title Function
     renameCard(cardId: number, title: string) {
+      let updated = false
       const currCard = this.getCardById(cardId)
       if (currCard) {
         title = title.trim() //Trim Spaces around the Title
         if (!title) {
           currCard.title = 'Untitled Card'
-          return
+          updated = true
         }
-        if (currCard.title !== title) currCard.title = title //set New Title
+        if (currCard.title !== title) {
+          currCard.title = title //set New Title
+          toast.success({
+            title: 'Title updated'
+          })
+        }
       }
+      return updated;
     },
 
     updateDescription(cardId: number, descr: string) {
       descr = descr.trim() //Clear spaces
       const currCard = this.getCardById(cardId)
       if (currCard && currCard.description != descr) {
-        if (!descr) currCard.description = ''
-        else currCard.description = descr // Set Description
+        currCard.description = descr // Set Description
+          toast.success({
+          title: 'Description of ' + currCard.title + ' saved!',
+    })
       }
+      
     },
 
     createCard() {

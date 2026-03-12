@@ -4,6 +4,8 @@ import TimeCardList from './components/TimeCardList.vue';
 </script>
 
 <template>
+   <router-view />
+  <ToastContainer />
   <div
     class="min-h-screen bg-gradient-to-r from-slate-950 via-slate-900 to-zinc-950 bg-[length:300%_300%] animate-backgroundFlow p-6 ">
 
