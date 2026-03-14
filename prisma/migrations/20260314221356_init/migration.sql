@@ -1,0 +1,24 @@
+-- CreateTable
+CREATE TABLE `TimeCard` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(191) NOT NULL,
+    `description` VARCHAR(191) NOT NULL DEFAULT '',
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `TimeEntry` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `cardId` INTEGER NOT NULL,
+    `startedAt` DATETIME(3) NOT NULL,
+    `endedAt` DATETIME(3) NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `TimeEntry` ADD CONSTRAINT `TimeEntry_cardId_fkey` FOREIGN KEY (`cardId`) REFERENCES `TimeCard`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

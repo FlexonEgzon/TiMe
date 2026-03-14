@@ -44,11 +44,11 @@ export const useCardStore = defineStore('cardStore', {
       const currCard = this.getCardById(cardId)
       if (currCard && currCard.description != descr) {
         currCard.description = descr // Set Description
-          toast.success({
+        toast.success({
           title: 'Description of ' + currCard.title + ' saved!',
-    })
+        })
       }
-      
+
     },
 
     createCard() {
@@ -104,7 +104,7 @@ export const useCardStore = defineStore('cardStore', {
     },
 
     stopTickerIfIdle() {
-      let runningCard = this.getRunningCard()
+      const runningCard = this.getRunningCard()
       if (runningCard === undefined && tickerId !== null) {
         clearInterval(tickerId) //Clear Timer intervall
         tickerId = null //Reset tickerId
@@ -112,7 +112,7 @@ export const useCardStore = defineStore('cardStore', {
     },
 
     tick() {
-      let currCard = this.getRunningCard()
+      const currCard = this.getRunningCard()
 
       if (!currCard) {
         this.stopTickerIfIdle()
