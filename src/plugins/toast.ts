@@ -1,9 +1,9 @@
-import type { App } from "vue";
-import { createToastflow, ToastContainer } from "vue-toastflow";
+import type { App } from 'vue';
+import { createToastflow, ToastContainer } from 'vue-toastflow';
 export function registerToast(app: App) {
   app.use(
     createToastflow({
-      position: "bottom-left",
+      position: 'bottom-left',
       order: 'newest',
       duration: 3000,
       maxVisible: 3,
@@ -11,8 +11,7 @@ export function registerToast(app: App) {
       pauseOnHover: false,
       closeButton: false,
       closeOnClick: true,
-
-    })
+    }),
   );
-   app.component("ToastContainer", ToastContainer);
+  app.component('ToastContainer', ToastContainer);
 }

@@ -1,3 +1,8 @@
+export interface CreateCardsDto {
+  title: string;
+  description?: string;
+}
+
 /**
  * server/types/
 

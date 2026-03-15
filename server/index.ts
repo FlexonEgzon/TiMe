@@ -1,15 +1,21 @@
-/**
- * Das ist der Startpunkt des Backends.
+import 'dotenv/config';
+import app from './app/app.js';
+import { prisma } from './lib/prisma.js';
 
-Aufgabe:
+const port = Number(process.env.PORT || 3000);
 
-Server starten
+async function startServer() {
+  try {
+    await prisma.$connect();
+    console.log('Database connection established');
 
-Port lesen
+    app.listen(port, () => {
+      console.log(`Example app listening on port ${port}`);
+    });
+  } catch (error) {
+    console.error('Failed to connect to the databse', error);
+    process.exit(1);
+  }
+}
 
-App importieren
-
-Merksatz:
-
-index.ts startet nur, enthält aber möglichst wenig Logik.
- */
+startServer();

@@ -1,17 +1,5 @@
-/**
- * Hier kommt genau eine Prisma-Instanz rein.
+import { PrismaClient } from '@prisma/client';
 
-Aufgabe:
+const prisma = new PrismaClient();
 
-Prisma Client initialisieren
-
-überall wiederverwendbar machen
-
-Warum wichtig:
-
-du willst nicht in jedem Service new PrismaClient() aufrufen
-
-Merksatz:
-
-lib/ enthält technische Helfer / Infrastruktur.
- */
+export { prisma };

@@ -1,25 +1,13 @@
-/**
- * Hier wird die Express App konfiguriert.
+import express from 'express';
+import TCRouter from '../routes/card.routes.js';
+const app = express();
 
-Aufgabe:
+app.use(express.json());
+app.use('/', TCRouter);
 
-express() erstellen
+app.get('/health', (req, res) => {
+  res.send('Hello World!');
+  console.log('Time', Date.now());
+});
 
-Middleware registrieren
-
-Routen einhängen
-
-Beispiele für Dinge, die hier später rein gehören:
-
-express.json()
-
-CORS
-
-zentrale Fehlerbehandlung
-
-route mounting
-
-Merksatz:
-
-app.ts baut die App zusammen.
- */
+export default app;
